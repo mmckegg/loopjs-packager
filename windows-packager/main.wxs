@@ -1,0 +1,40 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+   <Product Id="*" UpgradeCode="12345678-1234-1234-1234-111111111111" 
+            Name="Loop Drop" Version="0.0.1" Manufacturer="loopjs.com" Language="1033" >
+
+      <Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package" InstallPrivileges="limited" InstallScope="perUser"/>
+
+      <Media Id="1" Cabinet="app.cab" EmbedCab="yes" />
+
+      <Directory Id="TARGETDIR" Name="SourceDir">
+         <Directory Id="LocalAppDataFolder">
+            <Directory Id="APPLICATIONROOTDIRECTORY" Name="Loop Drop" />
+         </Directory>
+         <Directory Id="ProgramMenuFolder">
+             <Directory Id="ApplicationProgramsFolder" Name="Loop Drop"/>
+         </Directory>
+      </Directory>
+
+      <Icon Id="icon.ico" SourceFile="SourceDir\icon.ico" />
+      <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+      <Feature Id="MainApplication" Title="Main Application" Level="1">
+         <ComponentGroupRef  Id="Content" />
+      </Feature>
+
+      <CustomAction Id="LaunchApp"
+               FileKey="AppExecutable"
+               ExeCommand="" 
+               Execute="immediate" 
+               Impersonate="yes" 
+               Return="asyncNoWait" />
+
+      <InstallExecuteSequence>
+         <!-- <RemoveExistingProducts Before="InstallInitialize"> --> 
+         <Custom Action="LaunchApp" After="InstallFinalize">
+            NOT Installed AND NOT PATCH
+         </Custom>
+      </InstallExecuteSequence>
+
+   </Product>
+</Wix>
