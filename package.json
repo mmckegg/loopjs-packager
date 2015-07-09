@@ -5,14 +5,16 @@
   "author": "Matt McKegg",
   "main": "main.js",
   "scripts": {
-    "release-mac": "mkdir -p build && rm -rf build/* && electron-packager ../loop-drop-app \"Loop Drop\" --prune --platform=darwin --version=0.28.1 --arch=x64 --ignore=\"(build|releases|test|sounds|doc|tests|mocha|node_modules/midi)/\" --out=\"build\" --app-version=`cd ../loop-drop-app && npv` --icon=icon.icns && sh codesign.sh && appdmg appdmg.json \"releases/Loop Drop v`cd ../loop-drop-app && npv`.dmg\"",
-    "release-win": "mkdir -p build && rm -rf build/* && electron-packager ../loop-drop-app \"Loop Drop\" --prune --platform=win32 --version=0.28.1 --arch=x64 --ignore=\"(build|releases|test|sounds|doc|tests|mocha|node_modules/midi)/\" --out=\"build\" --app-version=`cd ../loop-drop-app && npv` --icon=icon.ico",
-    "release-linux": "mkdir -p build && rm -rf build/* && electron-packager ../loop-drop-app \"Loop Drop\" --prune --platform=linux --version=0.28.1 --arch=x64 --ignore=\"(build|releases|test|sounds|doc|tests|mocha|node_modules/midi)/\" --out=\"build\" --app-version=`cd ../loop-drop-app && npv` --icon=icon.ico"
+    "upload": "scp releases/Loop\\ Drop\\ v`cd ../loop-drop-app && npv`* dev@loopjs.com:loop/loopjs-www/files/"
   },
   "dependencies": {
-    "electron-packager": "^4.1.2",
+    "appdmg": "^0.3.1",
+    "cpr": "^0.4.1",
+    "each-async": "^1.1.1",
+    "electron-packager": "^5.0.0",
     "mkdirp": "^0.5.0",
+    "msi-packager": "^1.1.0",
     "npv": "^0.1.0",
-    "appdmg": "^0.3.1"
+    "rimraf": "^2.4.1"
   }
 }
