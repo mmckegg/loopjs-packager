@@ -71,7 +71,7 @@ function copyDemoProject (err) {
   }
 
   each(targets, function (dest, i, next) {
-    cpr('../loop-drop-app/demo-project', dest, next)
+    cpr('../loop-drop-app/demo-project', dest, /backup/, next)
   }, packageRelease)
 }
 
