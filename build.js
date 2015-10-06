@@ -5,9 +5,11 @@ var cpr = require('cpr')
 var electronPackager = require('electron-packager')
 var appdmg = require('appdmg')
 var packageMsi = require('msi-packager')
-var appPackage = require('../loop-drop-app/package.json')
 var path = require('path')
 var each = require('each-async')
+
+var buildFrom = '/Users/matt/Code/loop-drop-app'
+var appPackage = require(buildFrom  + '/package.json')
 
 var platform = process.argv[2]
 var arch = process.argv[3]
@@ -20,7 +22,7 @@ process.cwd(__dirname)
 rimraf.sync('build')
 
 electronPackager({
- dir: '../loop-drop-app',
+ dir: buildFrom,
  out: 'build',
  name: 'Loop Drop',
  arch: arch,
@@ -39,7 +41,7 @@ electronPackager({
    'doc/',
    'mocha/',
    'node_modules/midi/',
-   'mkdirp/', 
+   'mkdirp/',
    'testling/',
    'web-fs/',
    'browserify-fs/'
@@ -71,7 +73,7 @@ function copyDemoProject (err) {
   }
 
   each(targets, function (dest, i, next) {
-    cpr('../loop-drop-app/demo-project', dest, /backup/, next)
+    cpr(buildFrom + '/demo-project', dest, /backup/, next)
   }, packageRelease)
 }
 
@@ -79,7 +81,7 @@ function packageRelease () {
 
   if (platform === 'darwin' || platform === 'all') {
     packageForMac()
-  } 
+  }
 
   if (platform === 'win32' || platform === 'all') {
     if (arch === 'ia32' || arch === 'all') {
