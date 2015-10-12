@@ -41,7 +41,6 @@ electronPackager({
    'doc/',
    'mocha/',
    'node_modules/midi/',
-   'mkdirp/',
    'testling/',
    'web-fs/',
    'browserify-fs/'
