@@ -28,7 +28,7 @@ electronPackager({
  arch: arch,
  overwrite: true,
  platform: platform,
- version: '0.27.3',
+ version: '0.33.7',
  appVersion: appPackage.version,
  prune: true,
  asar: true,
