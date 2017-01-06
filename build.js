@@ -32,6 +32,7 @@ electronPackager({
   version: '0.36.6',
   appVersion: appPackage.version,
   prune: true,
+  derefSymlinks: true,
   asar: true,
   icon: 'icon.ext',
   ignore: [
@@ -73,13 +74,25 @@ function copyDemoProject (err) {
   }
 
   each(targets, function (dest, i, next) {
-    cpr(buildFrom + '/demo-project', dest, /backup/, next)
+    cpr(buildFrom + '/demo-project', dest, {
+      filter: /backup|preroll.wav|~recordings/
+    }, next)
   }, packageRelease)
 }
 
 function packageRelease () {
   if (platform === 'darwin' || platform === 'all') {
     packageForMac()
+  }
+
+  if (platform === 'linux' || platform === 'all') {
+    if (arch === 'ia32' || arch === 'all') {
+      packageForLinux('ia32')
+    }
+
+    if (arch === 'ia32' || arch === 'all') {
+      packageForLinux('x64')
+    }
   }
 
   if (platform === 'win32' || platform === 'all') {
@@ -110,7 +123,7 @@ function packageForMac () {
       target: outputPath,
       specification: {
         'title': 'Loop Drop',
-        'icon': 'icon.icns',
+        'icon': 'dmg.icns',
         'background': 'dmg.png',
         'icon-size': 100,
         'contents': [
@@ -146,5 +159,18 @@ function packageForWindows (arch) {
   }, function (err) {
     if (err) throw err
     console.log('Output to ' + path.resolve(outputPath))
+  })
+}
+
+function packageForLinux (arch) {
+  console.log('Creating zip')
+  var buildPath = __dirname + '/build/Loop Drop-linux-' + arch
+  var outputPath = __dirname + '/releases/Loop Drop v' + appPackage.version + '-linux-' + arch + '.zip'
+  rimraf.sync(outputPath)
+  rimraf.sync(buildPath + '/LICENSE')
+  fs.writeFileSync(buildPath + '/LICENSE-AGPL-3.0.txt', fs.readFileSync(buildFrom + '/LICENSE-AGPL-3.0.txt'))
+  fs.writeFileSync(buildPath + '/README.md', fs.readFileSync(buildFrom + '/README.md'))
+  execFileSync('zip', ['-r', '-X', outputPath, 'Loop Drop-linux-' + arch], {
+    cwd: __dirname + '/build'
   })
 }
